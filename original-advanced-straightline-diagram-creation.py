@@ -1,5 +1,25 @@
 from PIL import Image, ImageDraw
 
+type = 76  # 15:大吟醸 45:吟醸 52:特別純米 60:純米 76:普通
+rice = 80  # 18:山田錦 50:美山錦 80:五百万石
+fstarter = 78  # 30:速醸酛 70:山廃 78:生酛
+yeast = 53  # 12:1801 23:15(01) 38:9 50:7 53:6 
+ForR = 33  # 0:Fruit 100:Rice
+amino = 82  # 26:1 66:2 82:3
+acid = 67  # 13:4 15:3 26:2 67:1 
+svm = 51  # 15:-10 51:0 86:10
+DorS = 30  # 0:Dry 100:Sweet
+
+# ラインの一番左のピクセル
+av_line_start_left = 222
+# ラインの一番右のピクセル
+av_line_end_right = 1270
+# ラインの一番左から一番右までの長さ
+av_line_length = av_line_end_right - av_line_start_left
+# パーセンテージを掛けて長さを計算するための定数
+av_line_add = av_line_length/100
+
+
 def draw_custom_lines(image_path, lines):
     """
     Draw lines with custom settings on an image.
@@ -35,16 +55,17 @@ def draw_custom_lines(image_path, lines):
         img.save("advanced-lined.png")
         img.show()
 
-# Example usage
+# 描くラインをリストで提供
 lines = [
-    (222, 2, 222, 100, "solid", 8),  # Dotted line from (start-tupple) to (end-tupple) with thickness 8
-    (1270, 100, 1270, 202, "solid", 8),
-    (450, 202, 450, 305, "solid", 8), 
-    (1000, 305, 1000, 398, "solid", 8),
-    (300, 398, 300, 515, "solid", 8),
-    (400, 515, 400, 575, "solid", 8), 
-    (500, 575, 500, 635, "solid", 8),
-    (600, 635, 600, 695, "solid", 8),
-    (700, 695, 700, 800, "solid", 8),
+    (av_line_start_left+type*av_line_add, 2, av_line_start_left+type*av_line_add, 100, "solid", 8),  # Dotted line from (start-tupple) to (end-tupple) with thickness 8
+    (av_line_start_left+rice*av_line_add, 100, av_line_start_left+rice*av_line_add, 202, "dotted", 8),
+    (av_line_start_left+fstarter*av_line_add, 202, av_line_start_left+fstarter*av_line_add, 305, "solid", 8), 
+    (av_line_start_left+yeast*av_line_add, 305, av_line_start_left+yeast*av_line_add, 398, "solid", 8),
+    (av_line_start_left+ForR*av_line_add, 398, av_line_start_left+ForR*av_line_add, 515, "solid", 8),
+    (av_line_start_left+amino*av_line_add, 515, av_line_start_left+amino*av_line_add, 575, "solid", 8), 
+    (av_line_start_left+acid*av_line_add, 575, av_line_start_left+acid*av_line_add, 635, "solid", 8),
+    (av_line_start_left+svm*av_line_add, 635, av_line_start_left+svm*av_line_add, 695, "solid", 8),
+    (av_line_start_left+DorS*av_line_add, 695, av_line_start_left+DorS*av_line_add, 800, "solid", 8),
 ]
+
 draw_custom_lines("advanced.png", lines)
