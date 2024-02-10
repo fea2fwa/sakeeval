@@ -1,13 +1,28 @@
 from PIL import Image, ImageDraw
 
-type = 76  # 15:大吟醸 45:吟醸 52:特別純米 60:純米 76:普通
-rice = 80  # 18:山田錦 50:美山錦 80:五百万石
-fstarter = 78  # 30:速醸酛 70:山廃 78:生酛
+saketype = 45  # 15:大吟醸 45:吟醸 52:特別純米 60:純米 76:普通
+saketype_line = "solid"
+
+rice = 50  # 18:山田錦 50:美山錦 80:五百万石
+rice_line ="dotted"
+
+fstarter = 70  # 30:速醸酛 70:山廃 78:生酛
+fstarter_line = "solid"
+
 yeast = 53  # 12:1801 23:15(01) 38:9 50:7 53:6 
-ForR = 33  # 0:Fruit 100:Rice
+yeast_line = "solid"
+
+ForR = 100  # 0:Fruit 100:Rice
+
 amino = 82  # 26:1 66:2 82:3
+amino_line = "solid"
+
 acid = 67  # 13:4 15:3 26:2 67:1 
+acid_line = "dotted"
+
 svm = 51  # 15:-10 51:0 86:10
+svm_line = "solid"
+
 DorS = 30  # 0:Dry 100:Sweet
 
 # ラインの一番左のピクセル
@@ -57,14 +72,14 @@ def draw_custom_lines(image_path, lines):
 
 # 描くラインをリストで提供
 lines = [
-    (av_line_start_left+type*av_line_add, 2, av_line_start_left+type*av_line_add, 100, "solid", 8),  # Dotted line from (start-tupple) to (end-tupple) with thickness 8
-    (av_line_start_left+rice*av_line_add, 100, av_line_start_left+rice*av_line_add, 202, "dotted", 8),
-    (av_line_start_left+fstarter*av_line_add, 202, av_line_start_left+fstarter*av_line_add, 305, "solid", 8), 
-    (av_line_start_left+yeast*av_line_add, 305, av_line_start_left+yeast*av_line_add, 398, "solid", 8),
+    (av_line_start_left+saketype*av_line_add, 2, av_line_start_left+saketype*av_line_add, 100, saketype_line, 8),  # Dotted line from (start-tupple) to (end-tupple) with thickness 8
+    (av_line_start_left+rice*av_line_add, 100, av_line_start_left+rice*av_line_add, 202, rice_line, 8),
+    (av_line_start_left+fstarter*av_line_add, 202, av_line_start_left+fstarter*av_line_add, 305, fstarter_line, 8), 
+    (av_line_start_left+yeast*av_line_add, 305, av_line_start_left+yeast*av_line_add, 398, yeast_line, 8),
     (av_line_start_left+ForR*av_line_add, 398, av_line_start_left+ForR*av_line_add, 515, "solid", 8),
-    (av_line_start_left+amino*av_line_add, 515, av_line_start_left+amino*av_line_add, 575, "solid", 8), 
-    (av_line_start_left+acid*av_line_add, 575, av_line_start_left+acid*av_line_add, 635, "solid", 8),
-    (av_line_start_left+svm*av_line_add, 635, av_line_start_left+svm*av_line_add, 695, "solid", 8),
+    (av_line_start_left+amino*av_line_add, 515, av_line_start_left+amino*av_line_add, 575, amino_line, 8), 
+    (av_line_start_left+acid*av_line_add, 575, av_line_start_left+acid*av_line_add, 635, acid_line, 8),
+    (av_line_start_left+svm*av_line_add, 635, av_line_start_left+svm*av_line_add, 695, svm_line, 8),
     (av_line_start_left+DorS*av_line_add, 695, av_line_start_left+DorS*av_line_add, 800, "solid", 8),
 ]
 

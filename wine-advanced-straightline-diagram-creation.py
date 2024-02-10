@@ -1,5 +1,43 @@
 from PIL import Image, ImageDraw
 
+saketype = 45  # 15:大吟醸 45:吟醸 52:特別純米 60:純米 76:普通
+saketype_line = "solid"
+
+rice = 50  # 18:五百万石 50:美山錦 80:山田錦
+rice_line ="dotted"
+
+fstarter = 70  # 30:速醸酛 70:山廃 78:生酛
+fstarter_line = "solid"
+
+yeast = 12  # 12:1801 23:15(01) 38:9 50:7 53:6 
+yeast_line = "solid"
+
+ForR = 100  # 0:Fruit 100:Rice
+
+amino = 82  # 26:1 66:2 82:3
+amino_line = "solid"
+
+acid = 67  # 13:4 15:3 26:2 67:1 
+acid_line = "dotted"
+
+svm = 51  # 15:-10 51:0 86:10
+svm_line = "solid"
+
+DorS = 30  # 0:Dry 100:Sweet
+
+# ラインの一番左のピクセル
+av_line_start_left = 222
+# ラインの一番右のピクセル
+av_line_end_right = 1270
+# ラインの一番左から一番右までの長さ
+av_line_length = av_line_end_right - av_line_start_left
+# パーセンテージを掛けて長さを計算するための定数
+av_line_add = av_line_length/100
+
+# 酵母の配置が少し右にずれているので、それを修正するためのオフセット
+yeast_offset = 22
+
+
 def draw_custom_lines(image_path, lines):
     """
     Draw lines with custom settings on an image.
@@ -35,15 +73,17 @@ def draw_custom_lines(image_path, lines):
         img.save("advanced_wine-lined.png")
         img.show()
 
-# Example usage
+
+# 描くラインをリストで提供
 lines = [
-    (222, 2, 222, 100, "solid", 8),  # Dotted line from (start-tupple) to (end-tupple) with thickness 8
-    (1270, 100, 1270, 202, "solid", 8),
-    (450, 202, 450, 305, "solid", 8), 
-    (1000, 305, 1000, 390, "solid", 8),
-    (300, 390, 300, 482, "solid", 8),
-    (400, 482, 400, 575, "solid", 8), 
-    (500, 575, 500, 665, "solid", 8),
-    (600, 665, 600, 850, "solid", 8),
+    (av_line_start_left+saketype*av_line_add, 2, av_line_start_left+saketype*av_line_add, 100, saketype_line, 8),  # Dotted line from (start-tupple) to (end-tupple) with thickness 8
+    (av_line_start_left+rice*av_line_add, 100, av_line_start_left+rice*av_line_add, 202, rice_line, 8),
+    (av_line_start_left+fstarter*av_line_add, 202, av_line_start_left+fstarter*av_line_add, 305, fstarter_line, 8), 
+    (av_line_start_left+yeast*av_line_add+yeast_offset, 305, av_line_start_left+yeast*av_line_add+yeast_offset, 390, yeast_line, 8),
+    (av_line_start_left+amino*av_line_add, 390, av_line_start_left+amino*av_line_add, 485, amino_line, 8), 
+    (av_line_start_left+acid*av_line_add, 485, av_line_start_left+acid*av_line_add, 580, acid_line, 8),
+    (av_line_start_left+svm*av_line_add, 580, av_line_start_left+svm*av_line_add, 670, svm_line, 8),
+    (av_line_start_left+DorS*av_line_add, 670, av_line_start_left+DorS*av_line_add, 780, "solid", 8),
 ]
+
 draw_custom_lines("advanced_wine.png", lines)

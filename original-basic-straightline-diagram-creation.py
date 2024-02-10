@@ -1,5 +1,41 @@
 from PIL import Image, ImageDraw
 
+saketype = 45  # 15:大吟醸 45:吟醸 52:特別純米 60:純米 76:普通
+saketype_line = "solid"
+
+rice = 50  # 18:山田錦 50:美山錦 80:五百万石
+rice_line ="dotted"
+
+fstarter = 70  # 30:速醸酛 70:山廃 78:生酛
+fstarter_line = "solid"
+
+yeast = 53  # 12:1801 23:15(01) 38:9 50:7 53:6 
+yeast_line = "solid"
+
+ForR = 100  # 0:Fruit 100:Rice
+
+amino = 82  # 26:1 66:2 82:3
+amino_line = "solid"
+
+acid = 67  # 13:4 15:3 26:2 67:1 
+acid_line = "dotted"
+
+svm = 51  # 15:-10 51:0 86:10
+svm_line = "solid"
+
+DorS = 30  # 0:Dry 100:Sweet
+
+# ラインの一番左のピクセル
+av_line_start_left = 222
+# ラインの一番右のピクセル
+av_line_end_right = 1270
+# ラインの一番左から一番右までの長さ
+av_line_length = av_line_end_right - av_line_start_left
+# パーセンテージを掛けて長さを計算するための定数
+av_line_add = av_line_length/100
+
+# basic版のライン位置オフセット（どれだけ右寄りにoffset = 15
+
 def draw_custom_lines(image_path, lines):
     """
     Draw lines with custom settings on an image.
@@ -35,11 +71,12 @@ def draw_custom_lines(image_path, lines):
         img.save("basic-lined.png")
         img.show()
 
-# Example usage
+# 描くラインをリストで提供
 lines = [
-    (225, 14, 225, 124, "solid", 8),  # Dotted line from (start-tupple) to (end-tupple) with thickness 8
-    (1360, 124, 1360, 233, "solid", 8),
-    (500, 233, 500, 344, "solid", 8), 
-    (1000, 344, 1000, 550, "solid", 8) 
+    (av_line_start_left+saketype*av_line_add, 2, av_line_start_left+saketype*av_line_add, 100, saketype_line, 8),  # Dotted line from (start-tupple) to (end-tupple) with thickness 8
+    (av_line_start_left+rice*av_line_add, 100, av_line_start_left+rice*av_line_add, 202, rice_line, 8),
+    (av_line_start_left+fstarter*av_line_add, 202, av_line_start_left+fstarter*av_line_add, 305, fstarter_line, 8), 
+    (av_line_start_left+ForR*av_line_add, 340, av_line_start_left+ForR*av_line_add, 460, "solid", 8),
 ]
+
 draw_custom_lines("basic.png", lines)
