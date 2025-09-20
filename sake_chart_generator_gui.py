@@ -118,7 +118,7 @@ class ChartGeneratorApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Sake Chart Generator")
-        self.geometry("600x500")
+        self.geometry("600x550") # Increased height for new widgets
 
         # Default parameters
         self.sake_params = {
@@ -146,31 +146,39 @@ class ChartGeneratorApp(tk.Tk):
         sliders_frame.pack(fill=tk.BOTH, expand=True, pady=5)
 
         self.sliders = {}
+        self.style_vars = {}
         for i, (name, data) in enumerate(self.sake_params.items()):
             row_frame = ttk.Frame(sliders_frame)
             row_frame.pack(fill=tk.X, pady=2)
             
             ttk.Label(row_frame, text=f"{name}:", width=15).pack(side=tk.LEFT)
             
-            var = tk.DoubleVar(value=data["value"])
-            self.sliders[name] = var
-            
-            slider = ttk.Scale(row_frame, from_=0, to=100, orient=tk.HORIZONTAL, variable=var)
+            # Slider for value
+            val_var = tk.DoubleVar(value=data["value"])
+            self.sliders[name] = val_var
+            slider = ttk.Scale(row_frame, from_=0, to=100, orient=tk.HORIZONTAL, variable=val_var)
             slider.pack(side=tk.LEFT, fill=tk.X, expand=True)
             
-            label = ttk.Label(row_frame, text=f"{data['value']:.0f}", width=4)
-            label.pack(side=tk.LEFT)
-            
-            slider.configure(command=lambda v, l=label: l.config(text=f"{float(v):.0f}"))
+            val_label = ttk.Label(row_frame, text=f"{data['value']:.0f}", width=4)
+            val_label.pack(side=tk.LEFT)
+            slider.configure(command=lambda v, l=val_label: l.config(text=f"{float(v):.0f}"))
+
+            # Combobox for style
+            style_var = tk.StringVar(value=data["style"])
+            self.style_vars[name] = style_var
+            style_combo = ttk.Combobox(row_frame, textvariable=style_var, values=["solid", "dotted"], width=7, state="readonly")
+            style_combo.pack(side=tk.LEFT, padx=5)
 
         # Generate button
         button = ttk.Button(main_frame, text="Generate Charts", command=self.generate_charts)
         button.pack(pady=10)
 
     def generate_charts(self):
-        # Update params from sliders
-        for name, var in self.sliders.items():
-            self.sake_params[name]["value"] = var.get()
+        # Update params from GUI
+        for name, val_var in self.sliders.items():
+            self.sake_params[name]["value"] = val_var.get()
+        for name, style_var in self.style_vars.items():
+            self.sake_params[name]["style"] = style_var.get()
 
         try:
             print("Starting chart generation...")
